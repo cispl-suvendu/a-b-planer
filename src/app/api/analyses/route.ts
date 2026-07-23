@@ -6,6 +6,9 @@ import { analysisEngineService } from '@/server/services/AnalysisEngineService';
 import { eventBus } from '@/server/services/EventBus';
 import { Analysis } from '@/server/models/Analysis';
 import { z } from 'zod';
+import { waitUntil } from '@vercel/functions';
+
+export const maxDuration = 60; // Max execution time for Vercel Hobby/Pro
 
 export const dynamic = 'force-dynamic';
 
@@ -70,7 +73,7 @@ export async function POST(request: Request) {
     );
 
     // Add job to AnalysisEngineService directly (designed for future queue replacement)
-    analysisEngineService
+    const analysisPromise = analysisEngineService
       .runAnalysis(
         analysis.analysisId,
         result.data.url,
@@ -106,6 +109,9 @@ export async function POST(request: Request) {
           status: 'Failed',
         });
       });
+
+    // Tell Vercel to keep the lambda alive until the analysis completes
+    waitUntil(analysisPromise);
 
     return NextResponse.json({ success: true, data: analysis });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

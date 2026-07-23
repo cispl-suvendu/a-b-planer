@@ -13,6 +13,31 @@ export class ScreenshotService extends BaseService {
     analysisId: string
   ): Promise<{ screenshotUrl: string; domElements: unknown[] }> {
     this.logger.info(`Capturing screenshot and DOM tree for ${url}`);
+
+    // Vercel Serverless Functions do not include Chromium.
+    // We gracefully degrade to Microlink for the screenshot and skip DOM coordinates.
+    if (
+      process.env.VERCEL ||
+      process.env.NEXT_PUBLIC_VERCEL_ENV ||
+      process.env.VERCEL_ENV
+    ) {
+      this.logger.warn(
+        'Vercel environment detected. Bypassing Puppeteer and falling back to Microlink API for screenshot.'
+      );
+      try {
+        const microlinkUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}&screenshot=true&meta=false`;
+        const res = await fetch(microlinkUrl);
+        const data = await res.json();
+
+        if (data?.data?.screenshot?.url) {
+          return { screenshotUrl: data.data.screenshot.url, domElements: [] };
+        }
+      } catch (e) {
+        this.logger.error(`Microlink API failed: ${(e as Error).message}`);
+      }
+      return { screenshotUrl: '', domElements: [] };
+    }
+
     let browser;
     try {
       browser = await puppeteer.launch({
