@@ -11,10 +11,7 @@ interface AnalysisOverlayProps {
 }
 
 export function AnalysisOverlay({ analysisId }: AnalysisOverlayProps) {
-  const { data } = useGetAnalysisHistoryQuery(
-    { page: 1, limit: 10 },
-    { pollingInterval: 2000 }
-  );
+  const { data } = useGetAnalysisHistoryQuery({ page: 1, limit: 10 });
   const router = useRouter();
   const [isFadingOut, setIsFadingOut] = useState(false);
 

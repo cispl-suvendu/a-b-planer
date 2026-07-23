@@ -24,6 +24,16 @@ export interface IReport {
   screenshotUrl?: string;
   title: string;
   executiveSummary: string;
+  executiveReport?: Record<string, unknown>;
+  revenueOpportunity?: Record<string, unknown>;
+  roadmap?: Record<string, unknown>;
+  psychologyAnalysis?: Record<string, unknown>;
+  trustAudit?: Record<string, unknown>;
+  copyBreakdown?: Record<string, unknown>;
+  behaviorSimulation?: Record<string, unknown>;
+  competitorGapAnalysis?: Record<string, unknown>;
+  annotations?: unknown[];
+  heatmapData?: unknown[];
   experiments: IExperimentResponse[];
   promptVersion: string;
   status: string;

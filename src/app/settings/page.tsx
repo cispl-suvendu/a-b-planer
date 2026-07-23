@@ -32,7 +32,7 @@ export default function SettingsPage() {
     []
   );
   const [model, setModel] = useState('');
-  const [maxTokens, setMaxTokens] = useState(4000);
+  const [maxTokens, setMaxTokens] = useState(8000);
   const [temperature, setTemperature] = useState(0.7);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -97,7 +97,7 @@ export default function SettingsPage() {
         const isModelStillValid = fetchedModels.some((m) => m.id === userModel);
 
         setModel(isModelStillValid ? userModel : fetchedModels[0].id);
-        setMaxTokens(settingsJson.data.maxTokens || 4000);
+        setMaxTokens(settingsJson.data.maxTokens || 8000);
         setTemperature(
           settingsJson.data.temperature !== undefined
             ? settingsJson.data.temperature
@@ -203,7 +203,7 @@ export default function SettingsPage() {
                 />
                 <p className="text-xs text-muted-foreground">
                   The maximum length of the generated report. (Recommended:
-                  4000)
+                  8000)
                 </p>
               </div>
 

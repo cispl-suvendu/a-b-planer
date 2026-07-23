@@ -3,11 +3,47 @@
 import React, { useState, useEffect } from 'react';
 import { useGetReportByIdQuery } from '@/features/reports/api/reportApi';
 import { ReportHeader } from '@/features/reports/components/ReportHeader';
-import { SummaryCard } from '@/features/reports/components/SummaryCard';
-import { ExperimentCard } from '@/features/reports/components/ExperimentCard';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+
+import { ExecutiveDashboardCard } from '@/features/reports/components/ExecutiveDashboardCard';
+import { PriorityRoadmapCard } from '@/features/reports/components/PriorityRoadmapCard';
+import { RevenueOpportunityCard } from '@/features/reports/components/RevenueOpportunityCard';
+import {
+  ScreenshotAnnotationsCard,
+  Annotation,
+} from '@/features/reports/components/ScreenshotAnnotationsCard';
+import {
+  VisualHeatmapCard,
+  HeatmapPoint,
+} from '@/features/reports/components/VisualHeatmapCard';
+import { PsychologyAnalysisCard } from '@/features/reports/components/PsychologyAnalysisCard';
+import { TrustAuditCard } from '@/features/reports/components/TrustAuditCard';
+import { CopyBreakdownCard } from '@/features/reports/components/CopyBreakdownCard';
+import { BehaviorSimulationCard } from '@/features/reports/components/BehaviorSimulationCard';
+import { CompetitorGapCard } from '@/features/reports/components/CompetitorGapCard';
+
+type ExecutiveReportType = Parameters<
+  typeof ExecutiveDashboardCard
+>[0]['report'];
+type RevenueOpportunityType = Parameters<
+  typeof RevenueOpportunityCard
+>[0]['revenueOpportunity'];
+type PriorityRoadmapType = Parameters<typeof PriorityRoadmapCard>[0]['roadmap'];
+type PsychologyAnalysisType = Parameters<
+  typeof PsychologyAnalysisCard
+>[0]['psychologyAnalysis'];
+type TrustAuditType = Parameters<typeof TrustAuditCard>[0]['trustAudit'];
+type CopyBreakdownType = Parameters<
+  typeof CopyBreakdownCard
+>[0]['copyBreakdown'];
+type BehaviorSimulationType = Parameters<
+  typeof BehaviorSimulationCard
+>[0]['behaviorSimulation'];
+type CompetitorGapType = Parameters<
+  typeof CompetitorGapCard
+>[0]['competitorGapAnalysis'];
 
 export default function ReportPage({ params }: { params: { id: string } }) {
   const [isPolling, setIsPolling] = useState(true);
@@ -92,11 +128,6 @@ export default function ReportPage({ params }: { params: { id: string } }) {
 
   const { report } = data;
 
-  // Sort experiments by Priority Score (Highest first)
-  const sortedExperiments = [...report.experiments].sort(
-    (a, b) => b.priorityScore - a.priorityScore
-  );
-
   return (
     <div className="container max-w-5xl space-y-8 py-8">
       <div>
@@ -112,32 +143,70 @@ export default function ReportPage({ params }: { params: { id: string } }) {
         <ReportHeader report={report} />
       </div>
 
-      <SummaryCard summary={report.executiveSummary} />
+      <ExecutiveDashboardCard
+        summary={report.executiveSummary || 'No summary available'}
+        report={report.executiveReport as ExecutiveReportType}
+      />
 
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight">
-            Optimization Roadmap
-          </h2>
-          <span className="rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
-            Sorted by Priority
-          </span>
-        </div>
+      {report.revenueOpportunity && (
+        <RevenueOpportunityCard
+          revenueOpportunity={
+            report.revenueOpportunity as RevenueOpportunityType
+          }
+        />
+      )}
 
-        <div className="grid gap-6">
-          {sortedExperiments.map((experiment, index) => (
-            <ExperimentCard key={index} experiment={experiment} index={index} />
-          ))}
+      {report.roadmap && (
+        <PriorityRoadmapCard roadmap={report.roadmap as PriorityRoadmapType} />
+      )}
 
-          {sortedExperiments.length === 0 && (
-            <div className="rounded-xl border border-dashed bg-muted/20 py-12 text-center">
-              <p className="text-muted-foreground">
-                No experiments were generated for this report.
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
+      {report.psychologyAnalysis && (
+        <PsychologyAnalysisCard
+          psychologyAnalysis={
+            report.psychologyAnalysis as PsychologyAnalysisType
+          }
+        />
+      )}
+
+      {report.trustAudit && (
+        <TrustAuditCard trustAudit={report.trustAudit as TrustAuditType} />
+      )}
+
+      {report.copyBreakdown && (
+        <CopyBreakdownCard
+          copyBreakdown={report.copyBreakdown as CopyBreakdownType}
+        />
+      )}
+
+      {report.behaviorSimulation && (
+        <BehaviorSimulationCard
+          behaviorSimulation={
+            report.behaviorSimulation as BehaviorSimulationType
+          }
+        />
+      )}
+
+      {report.competitorGapAnalysis && (
+        <CompetitorGapCard
+          competitorGapAnalysis={
+            report.competitorGapAnalysis as CompetitorGapType
+          }
+        />
+      )}
+
+      {report.annotations && (
+        <ScreenshotAnnotationsCard
+          screenshotUrl={report.screenshotUrl}
+          annotations={report.annotations as Annotation[]}
+        />
+      )}
+
+      {report.heatmapData && (
+        <VisualHeatmapCard
+          screenshotUrl={report.screenshotUrl}
+          heatmapData={report.heatmapData as HeatmapPoint[]}
+        />
+      )}
     </div>
   );
 }

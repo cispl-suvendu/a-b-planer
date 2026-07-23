@@ -24,12 +24,16 @@ export async function GET() {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Return current settings or defaults
     const settings = user.aiSettings || {
-      model: 'meta-llama/llama-3.1-8b-instruct:free',
-      maxTokens: 4000,
+      model: 'google/gemma-4-26b-a4b-it:free',
+      maxTokens: 8000,
       temperature: 0.7,
     };
+
+    // Auto-upgrade old 4000 default to 8000 for existing users
+    if (settings.maxTokens === 4000) {
+      settings.maxTokens = 8000;
+    }
 
     return NextResponse.json({ success: true, data: settings });
   } catch (error) {

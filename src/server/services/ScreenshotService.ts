@@ -8,8 +8,11 @@ export class ScreenshotService extends BaseService {
    * Captures a full page screenshot using Puppeteer.
    * Returns a URL/path to the saved screenshot.
    */
-  async captureScreenshot(url: string, analysisId: string): Promise<string> {
-    this.logger.info(`Capturing screenshot for ${url}`);
+  async captureScreenshot(
+    url: string,
+    analysisId: string
+  ): Promise<{ screenshotUrl: string; domElements: unknown[] }> {
+    this.logger.info(`Capturing screenshot and DOM tree for ${url}`);
     let browser;
     try {
       browser = await puppeteer.launch({
@@ -24,6 +27,31 @@ export class ScreenshotService extends BaseService {
 
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 
+      // Extract DOM spatial coordinates
+      const domElements = await page.evaluate(() => {
+        const elements = document.querySelectorAll(
+          'h1, h2, h3, a, button, img, section, form, input, .hero, .cta, header, footer'
+        );
+        const data: unknown[] = [];
+
+        elements.forEach((el, index) => {
+          const rect = el.getBoundingClientRect();
+          // Only care about visible elements
+          if (rect.width > 0 && rect.height > 0) {
+            data.push({
+              id: `el-${index}`,
+              tag: el.tagName.toLowerCase(),
+              text: (el as HTMLElement).innerText?.substring(0, 100) || '',
+              x: Math.round(rect.x),
+              y: Math.round(rect.y),
+              width: Math.round(rect.width),
+              height: Math.round(rect.height),
+            });
+          }
+        });
+        return data;
+      });
+
       // Ensure directory exists
       const screenshotDir = path.join(process.cwd(), 'public', 'screenshots');
       await fs.mkdir(screenshotDir, { recursive: true });
@@ -34,10 +62,10 @@ export class ScreenshotService extends BaseService {
       await page.screenshot({
         path: filePath,
         type: 'webp',
-        fullPage: true,
+        fullPage: true, // We take a full page screenshot
       });
 
-      return `/screenshots/${fileName}`;
+      return { screenshotUrl: `/screenshots/${fileName}`, domElements };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       this.logger.error(`Screenshot failed for ${url}: ${error.message}`);

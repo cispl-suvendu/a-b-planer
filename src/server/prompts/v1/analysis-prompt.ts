@@ -7,6 +7,86 @@ You must output your response in strict JSON format. Do not include markdown for
 The JSON must match the following TypeScript schema exactly:
 {
   "executiveSummary": "string (A 2-3 sentence overview of the landing page's biggest optimization opportunities)",
+  "executiveReport": {
+    "scores": {
+      "overall": "number (0-100)",
+      "performance": "number (0-100)",
+      "ux": "number (0-100)",
+      "messaging": "number (0-100)",
+      "trust": "number (0-100)",
+      "seo": "number (0-100)",
+      "accessibility": "number (0-100)",
+      "conversion": "number (0-100)"
+    },
+    "topWins": ["string", "string", "string", "string", "string"],
+    "topProblems": ["string", "string", "string", "string", "string"]
+  },
+  "revenueOpportunity": {
+    "heroLift": "number (Estimated percentage lift, e.g., 7)",
+    "ctaLift": "number",
+    "trustLift": "number",
+    "pricingLift": "number",
+    "totalLift": "number (Sum of above)"
+  },
+  "roadmap": {
+    "week1": [
+      { "task": "string", "category": "string", "impact": "string (High/Medium/Low)" }
+    ],
+    "week2": [
+      { "task": "string", "category": "string", "impact": "string" }
+    ],
+    "week3": [
+      { "task": "string", "category": "string", "impact": "string" }
+    ]
+  },
+  "psychologyAnalysis": {
+    "cognitiveLoad": "string (High/Medium/Low)",
+    "frictionPoints": ["string", "string"],
+    "motivationTriggers": ["string", "string"],
+    "overallHeuristicScore": "number (0-100)"
+  },
+  "trustAudit": {
+    "trustScore": "number (0-100)",
+    "missingSignals": ["string", "string"],
+    "credibilityStrengths": ["string", "string"],
+    "riskReversalStatus": "string (Poor/Adequate/Excellent)"
+  },
+  "copyBreakdown": {
+    "readabilityScore": "number (0-100)",
+    "jargonCount": "number",
+    "valuePropositionClarity": "string (Unclear/Clear/Compelling)",
+    "headlineCritique": "string",
+    "ctaCritique": "string"
+  },
+  "behaviorSimulation": {
+    "first5Seconds": "string",
+    "scrollLikelihood": "string (High/Medium/Low)",
+    "primaryDistraction": "string",
+    "simulatedBounceReason": "string"
+  },
+  "competitorGapAnalysis": {
+    "inferredIndustry": "string",
+    "missingStandardFeatures": ["string", "string"],
+    "differentiationOpportunity": "string"
+  },
+  "annotations": [
+    {
+      "id": "string (Match the id from DOM SPATIAL ELEMENTS)",
+      "x": "number (X coordinate)",
+      "y": "number (Y coordinate)",
+      "title": "string (Short title of issue)",
+      "description": "string",
+      "suggestion": "string"
+    }
+  ],
+  "heatmapData": [
+    {
+      "x": "number",
+      "y": "number",
+      "radius": "number",
+      "intensity": "number (1-10)"
+    }
+  ],
   "experiments": [
     {
       "title": "string (Short, clear name for the experiment)",
@@ -37,6 +117,7 @@ export const buildUserPrompt = (data: {
   lighthouse: any;
   htmlData: any;
   cssData: any;
+  domElements: any;
 }) => {
   return `Please analyze the following landing page data and generate A/B test experiments.
 
@@ -51,11 +132,14 @@ Accessibility: ${data.lighthouse?.categories?.accessibility?.score}
 Best Practices: ${data.lighthouse?.categories?.['best-practices']?.score}
 SEO: ${data.lighthouse?.categories?.seo?.score}
 
-KEY HTML EXTRACTS (Headings, Links, Buttons):
+KEY HTML EXTRACTS:
 ${JSON.stringify(data.htmlData, null, 2)}
 
-CSS DESIGN TOKENS (Colors, Typography):
+CSS DESIGN TOKENS:
 ${JSON.stringify(data.cssData, null, 2)}
+
+DOM SPATIAL ELEMENTS (id, tag, text, x, y, width, height for bounding boxes):
+${JSON.stringify(data.domElements, null, 2)}
 
 Output valid JSON only.`;
 };

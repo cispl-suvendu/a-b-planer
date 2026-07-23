@@ -5,7 +5,7 @@ const envSchema = z.object({
     .enum(['development', 'test', 'production'])
     .default('development'),
   MONGODB_URI: z.string().url().min(1),
-  OPENROUTER_MODEL: z.string().default('meta-llama/llama-3.1-8b-instruct'),
+  OPENROUTER_MODEL: z.string().default('google/gemma-4-26b-a4b-it:free'),
   NEXTAUTH_SECRET: z.string().min(1),
   NEXTAUTH_URL: z.string().url().optional(),
   GOOGLE_CLIENT_ID: z.string().min(1),

@@ -51,8 +51,8 @@ const UserSchema = new Schema<IUser>(
     subscriptionId: { type: Schema.Types.ObjectId, ref: 'Subscription' },
     analysisUsed: { type: Number, default: 0 },
     aiSettings: {
-      model: { type: String, default: 'meta-llama/llama-3.1-8b-instruct:free' },
-      maxTokens: { type: Number, default: 4000 },
+      model: { type: String, default: 'google/gemma-4-26b-a4b-it:free' },
+      maxTokens: { type: Number, default: 8000 },
       temperature: { type: Number, default: 0.7 },
     },
   },

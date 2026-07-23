@@ -43,11 +43,12 @@ export class AnalysisEngineService extends BaseService {
       // 2. Capture Screenshot FIRST so the UI can display it
       if (onProgress) await onProgress(15, 'Capturing website structure...');
       this.logger.info(`Capturing screenshot...`);
-      const screenshotUrl = await screenshotService.captureScreenshot(
-        url,
-        analysisId
-      );
-      await Analysis.findByIdAndUpdate(analysisId, { screenshotUrl });
+      const { screenshotUrl, domElements } =
+        await screenshotService.captureScreenshot(url, analysisId);
+      await Analysis.findByIdAndUpdate(analysisId, {
+        screenshotUrl,
+        domElements,
+      });
 
       if (onProgress)
         await onProgress(20, 'Analyzing Page...', { screenshotUrl });
@@ -100,6 +101,7 @@ export class AnalysisEngineService extends BaseService {
           lighthouse: lighthouseResult,
           htmlData: metadataResult.htmlData,
           cssData: metadataResult.cssData,
+          domElements,
         },
         aiSettings
       );

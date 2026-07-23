@@ -8,6 +8,7 @@ export interface IAnalysis extends Document {
   progress: number;
   analysisType: string;
   screenshotUrl?: string;
+  domElements?: unknown[];
   htmlData?: Record<string, unknown>;
   cssData?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
@@ -48,6 +49,7 @@ const AnalysisSchema = new Schema<IAnalysis>(
       default: 0,
     },
     screenshotUrl: String,
+    domElements: [Schema.Types.Mixed],
     htmlData: Schema.Types.Mixed,
     cssData: Schema.Types.Mixed,
     metadata: Schema.Types.Mixed,

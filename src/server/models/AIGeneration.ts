@@ -25,6 +25,16 @@ export interface IAIGeneration extends Document {
   status: 'Processing' | 'Completed' | 'Failed';
   error?: string;
   executiveSummary?: string;
+  executiveReport?: Record<string, unknown>;
+  roadmap?: Record<string, unknown>;
+  revenueOpportunity?: Record<string, unknown>;
+  psychologyAnalysis?: Record<string, unknown>;
+  trustAudit?: Record<string, unknown>;
+  copyBreakdown?: Record<string, unknown>;
+  behaviorSimulation?: Record<string, unknown>;
+  competitorGapAnalysis?: Record<string, unknown>;
+  annotations?: unknown[];
+  heatmapData?: unknown[];
   experiments: IExperiment[];
   createdAt: Date;
   updatedAt: Date;
@@ -60,6 +70,16 @@ const AIGenerationSchema = new Schema<IAIGeneration>(
     },
     error: { type: String },
     executiveSummary: { type: String },
+    executiveReport: Schema.Types.Mixed,
+    roadmap: Schema.Types.Mixed,
+    revenueOpportunity: Schema.Types.Mixed,
+    psychologyAnalysis: Schema.Types.Mixed,
+    trustAudit: Schema.Types.Mixed,
+    copyBreakdown: Schema.Types.Mixed,
+    behaviorSimulation: Schema.Types.Mixed,
+    competitorGapAnalysis: Schema.Types.Mixed,
+    annotations: [Schema.Types.Mixed],
+    heatmapData: [Schema.Types.Mixed],
     experiments: [ExperimentSchema],
   },
   {

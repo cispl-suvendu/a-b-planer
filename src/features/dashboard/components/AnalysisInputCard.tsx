@@ -64,13 +64,17 @@ export function AnalysisInputCard({
   };
 
   return (
-    <Card className="border-primary/20 shadow-md">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
-          New Landing Page Analysis
+    <Card className="relative overflow-hidden border-2 border-indigo-500/20 bg-gradient-to-br from-background to-indigo-50/30 shadow-2xl shadow-indigo-500/10 dark:to-indigo-950/20">
+      <CardHeader className="pb-8 pt-8">
+        <CardTitle className="flex items-center gap-3 text-3xl font-extrabold tracking-tight">
+          <div className="rounded-full bg-indigo-100 p-2.5 text-indigo-600 shadow-inner dark:bg-indigo-900/50 dark:text-indigo-400">
+            <Sparkles className="h-7 w-7" />
+          </div>
+          <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-purple-400">
+            New Landing Page Analysis
+          </span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="mt-2 text-base font-medium text-muted-foreground">
           Enter the URL of the landing page you want to analyze for conversion
           rate optimization.
         </CardDescription>
@@ -85,16 +89,16 @@ export function AnalysisInputCard({
               onChange={(e) => setUrl(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
               disabled={isLoading}
-              className="flex-1"
+              className="h-14 flex-1 rounded-xl border-2 px-5 text-lg shadow-sm transition-all focus-visible:border-indigo-500 focus-visible:ring-indigo-500"
             />
             <Button
               onClick={handleAnalyze}
               disabled={isLoading}
-              variant={!isUnlimited && remaining === 0 ? 'default' : 'default'}
+              size="lg"
               className={
                 !isUnlimited && remaining === 0
-                  ? 'bg-indigo-600 hover:bg-indigo-700'
-                  : ''
+                  ? 'h-14 rounded-xl bg-indigo-600 px-8 text-lg font-semibold transition-all hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25'
+                  : 'h-14 rounded-xl bg-indigo-600 px-8 text-lg font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 active:translate-y-0'
               }
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

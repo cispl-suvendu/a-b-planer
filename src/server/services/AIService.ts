@@ -31,6 +31,7 @@ export class AIService extends BaseService {
       lighthouse: any;
       htmlData: any;
       cssData: any;
+      domElements: any;
     },
     aiSettings?: IAISettings
   ) {
@@ -64,7 +65,7 @@ export class AIService extends BaseService {
             ],
             // Many free models crash or fail if response_format is forced without strict schemas.
             // We rely on the prompt to enforce JSON output instead to maximize compatibility.
-            max_tokens: aiSettings?.maxTokens || 4000,
+            max_tokens: aiSettings?.maxTokens || 8000,
             temperature:
               aiSettings?.temperature !== undefined
                 ? aiSettings.temperature
@@ -117,7 +118,7 @@ export class AIService extends BaseService {
             throw lastError;
           }
           // Optional short delay between retries
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 5000));
         }
       }
 
@@ -161,6 +162,16 @@ export class AIService extends BaseService {
       generation.status = 'Completed';
       generation.executiveSummary =
         (parsedData.executiveSummary as string) || 'No summary generated.';
+      generation.executiveReport = parsedData.executiveReport;
+      generation.roadmap = parsedData.roadmap;
+      generation.revenueOpportunity = parsedData.revenueOpportunity;
+      generation.psychologyAnalysis = parsedData.psychologyAnalysis;
+      generation.trustAudit = parsedData.trustAudit;
+      generation.copyBreakdown = parsedData.copyBreakdown;
+      generation.behaviorSimulation = parsedData.behaviorSimulation;
+      generation.competitorGapAnalysis = parsedData.competitorGapAnalysis;
+      generation.annotations = parsedData.annotations;
+      generation.heatmapData = parsedData.heatmapData;
       generation.experiments = experiments;
 
       // Track usage/cost

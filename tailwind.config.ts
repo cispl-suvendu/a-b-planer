@@ -77,16 +77,28 @@ const config = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
+          from: {
+            height: '0',
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)',
+          },
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
+          from: {
+            height: 'var(--radix-accordion-content-height)',
+          },
+          to: {
+            height: '0',
+          },
         },
         scan: {
-          '0%, 100%': { top: '0%' },
-          '50%': { top: '100%' },
+          '0%, 100%': {
+            top: '0%',
+          },
+          '50%': {
+            top: '100%',
+          },
         },
       },
       animation: {

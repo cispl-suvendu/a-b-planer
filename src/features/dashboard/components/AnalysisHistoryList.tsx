@@ -8,6 +8,7 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   useGetAnalysisHistoryQuery,
   AnalysisRecord,
@@ -106,10 +107,10 @@ export function AnalysisHistoryList({
             {history.map((item: AnalysisRecord) => (
               <div
                 key={item._id}
-                className="flex items-center justify-between rounded-lg border bg-card p-4 transition-colors hover:bg-accent/50"
+                className="group flex items-center justify-between rounded-xl border bg-card p-5 transition-all hover:bg-muted/50 hover:shadow-lg"
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded border bg-muted">
+                <div className="flex items-center gap-5">
+                  <div className="flex h-16 w-24 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border-2 bg-muted shadow-sm transition-transform group-hover:scale-105">
                     {item.screenshotUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -118,19 +119,41 @@ export function AnalysisHistoryList({
                         className="h-full w-full object-cover object-top"
                       />
                     ) : (
-                      <Monitor className="h-5 w-5 text-muted-foreground opacity-50" />
+                      <Monitor className="h-6 w-6 text-muted-foreground opacity-40" />
                     )}
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="max-w-[200px] truncate font-medium sm:max-w-xs md:max-w-sm">
+                  <div className="flex flex-col gap-2">
+                    <div className="max-w-[200px] truncate text-lg font-semibold sm:max-w-xs md:max-w-md">
                       {item.url}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />{' '}
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-1.5 font-medium">
+                        <Clock className="h-4 w-4 text-indigo-500" />
                         {new Date(item.createdAt).toLocaleDateString()}
                       </span>
-                      <span>Status: {item.status}</span>
+                      {item.status === 'Completed' ? (
+                        <Badge
+                          variant="outline"
+                          className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400"
+                        >
+                          Completed
+                        </Badge>
+                      ) : item.status === 'Failed' ? (
+                        <Badge
+                          variant="outline"
+                          className="border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400"
+                        >
+                          Failed
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant="outline"
+                          className="animate-pulse border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400"
+                        >
+                          {item.status}{' '}
+                          {item.progress ? `(${item.progress}%)` : ''}
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </div>
