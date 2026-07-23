@@ -11,11 +11,37 @@ interface AnalysisOverlayProps {
 }
 
 export function AnalysisOverlay({ analysisId }: AnalysisOverlayProps) {
-  const { data } = useGetAnalysisHistoryQuery({ page: 1, limit: 10 });
+  // Derive if polling is needed
+  const { data: temp } = useGetAnalysisHistoryQuery({ page: 1, limit: 10 });
+  const hasActive = temp?.data?.some(
+    (a) =>
+      a._id === analysisId &&
+      (a.status === 'Queued' ||
+        a.status === 'Processing' ||
+        a.status === 'Generating Report')
+  );
+
+  const { data } = useGetAnalysisHistoryQuery(
+    { page: 1, limit: 10 },
+    { pollingInterval: hasActive ? 3000 : 0 }
+  );
+
   const router = useRouter();
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   const analysis = data?.data?.find((a) => a._id === analysisId);
+  const progress = analysis?.progress || 0;
+
+  // If we rely on polling (Vercel), 'stage' might not be provided via SSE, so we derive it from progress
+  let displayStage = analysis?.stage;
+  if (!displayStage) {
+    if (progress < 15) displayStage = 'Validating URL safety...';
+    else if (progress < 40) displayStage = 'Capturing website structure...';
+    else if (progress < 80)
+      displayStage = 'Extracting Content & Running Audit...';
+    else if (progress < 100) displayStage = 'Generating AI Analysis...';
+    else displayStage = 'Completed';
+  }
 
   useEffect(() => {
     if (analysis?.status === 'Completed' && !isFadingOut) {
@@ -51,7 +77,7 @@ export function AnalysisOverlay({ analysisId }: AnalysisOverlayProps) {
         <div className="mb-8 flex items-center gap-3 rounded-full border bg-muted/50 px-6 py-3 shadow-sm">
           <Loader2 className="h-5 w-5 animate-spin text-primary" />
           <span className="text-lg font-medium">
-            {analysis.stage || 'Initializing analysis engines...'}
+            {displayStage || 'Initializing analysis engines...'}
           </span>
           <span className="ml-2 font-bold text-primary">
             {analysis.progress || 0}%

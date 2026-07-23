@@ -34,10 +34,21 @@ export function AnalysisHistoryList({
 }: AnalysisHistoryListProps = {}) {
   const { toast } = useToast();
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError, refetch } = useGetAnalysisHistoryQuery({
-    page,
-    limit,
-  });
+
+  // We use polling as a robust fallback for Vercel Serverless environments
+  // where in-memory SSE event emitters don't work across lambda boundaries.
+  const { data: temp } = useGetAnalysisHistoryQuery({ page, limit });
+  const hasActive = temp?.data?.some(
+    (a) =>
+      a.status === 'Queued' ||
+      a.status === 'Processing' ||
+      a.status === 'Generating Report'
+  );
+
+  const { data, isLoading, isError, refetch } = useGetAnalysisHistoryQuery(
+    { page, limit },
+    { pollingInterval: hasActive ? 3000 : 0 }
+  );
 
   const history = React.useMemo(() => data?.data || [], [data]);
   const meta = data?.meta;
