@@ -17,4 +17,5 @@ async function meHandler() {
   );
 }
 
+export const dynamic = 'force-dynamic';
 export const GET = withErrorHandler(meHandler);

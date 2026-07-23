@@ -7,6 +7,8 @@ import { eventBus } from '@/server/services/EventBus';
 import { Analysis } from '@/server/models/Analysis';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);

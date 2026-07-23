@@ -23,4 +23,5 @@ async function profileHandler() {
   return successResponse({ user }, 'User profile retrieved');
 }
 
+export const dynamic = 'force-dynamic';
 export const GET = withErrorHandler(profileHandler);

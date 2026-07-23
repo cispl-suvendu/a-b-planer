@@ -5,6 +5,8 @@ import { connectToDatabase } from '@/lib/db/mongoose';
 import { Analysis } from '@/server/models/Analysis';
 import { AIGeneration } from '@/server/models/AIGeneration';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }

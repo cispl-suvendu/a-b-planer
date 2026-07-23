@@ -19,4 +19,5 @@ async function healthCheckHandler(req: NextRequest) {
   );
 }
 
+export const dynamic = 'force-dynamic';
 export const GET = withErrorHandler(healthCheckHandler);
