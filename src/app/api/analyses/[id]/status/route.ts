@@ -4,6 +4,8 @@ import { connectToDatabase } from '@/lib/db/mongoose';
 import { Analysis } from '@/server/models/Analysis';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }

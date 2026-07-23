@@ -11,6 +11,8 @@ const AISettingsSchema = z.object({
   temperature: z.number().min(0).max(2.0),
 });
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
