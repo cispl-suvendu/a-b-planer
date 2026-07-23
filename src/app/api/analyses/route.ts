@@ -87,7 +87,8 @@ export async function POST(request: Request) {
               progress,
               stage,
               status: mappedStatus,
-              screenshotUrl: data?.screenshotUrl,
+              screenshotUrl: (data as { screenshotUrl?: string })
+                ?.screenshotUrl,
             });
           } catch (err) {
             console.error('Failed to update progress:', err);
