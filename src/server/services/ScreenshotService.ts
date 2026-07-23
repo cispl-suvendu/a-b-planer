@@ -26,14 +26,23 @@ export class ScreenshotService extends BaseService {
       );
       try {
         const microlinkUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}&screenshot=true&meta=false`;
-        const res = await fetch(microlinkUrl);
+
+        // Add a 10-second timeout so it doesn't freeze the lambda if the API is slow
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const res = await fetch(microlinkUrl, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
         const data = await res.json();
 
         if (data?.data?.screenshot?.url) {
           return { screenshotUrl: data.data.screenshot.url, domElements: [] };
         }
       } catch (e) {
-        this.logger.error(`Microlink API failed: ${(e as Error).message}`);
+        this.logger.error(
+          `Microlink API failed or timed out: ${(e as Error).message}`
+        );
       }
       return { screenshotUrl: '', domElements: [] };
     }

@@ -8,7 +8,7 @@ import { Analysis } from '@/server/models/Analysis';
 import { z } from 'zod';
 import { waitUntil } from '@vercel/functions';
 
-export const maxDuration = 60; // Max execution time for Vercel Hobby/Pro
+export const maxDuration = 300; // Max execution time for Vercel (Up to 5 mins for Pro)
 
 export const dynamic = 'force-dynamic';
 
