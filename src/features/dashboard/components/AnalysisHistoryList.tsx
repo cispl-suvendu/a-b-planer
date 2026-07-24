@@ -14,11 +14,11 @@ import {
   AnalysisRecord,
 } from '@/features/dashboard/api/dashboardApi';
 import { EmptyState } from '@/components/common/EmptyState';
-import { LoadingState } from '@/components/common/LoadingState';
 import { ErrorState } from '@/components/common/ErrorState';
 import { ScoreBadge } from '@/components/common/ScoreBadge';
 import { BarChart3, ExternalLink, Clock, Monitor } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AnalysisHistorySkeleton } from './AnalysisHistorySkeleton';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { usePrevious } from '@/hooks/use-previous';
@@ -78,14 +78,7 @@ export function AnalysisHistoryList({
     });
   }, [history, prevHistory, toast]);
 
-  if (isLoading)
-    return (
-      <Card>
-        <CardContent className="pt-6">
-          <LoadingState message="Loading your history..." />
-        </CardContent>
-      </Card>
-    );
+  if (isLoading) return <AnalysisHistorySkeleton />;
   if (isError)
     return (
       <Card>

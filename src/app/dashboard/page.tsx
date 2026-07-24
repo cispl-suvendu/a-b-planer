@@ -5,7 +5,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { AnalysisInputCard } from '@/features/dashboard/components/AnalysisInputCard';
 import { AnalysisHistoryList } from '@/features/dashboard/components/AnalysisHistoryList';
 import { useGetDashboardSummaryQuery } from '@/features/dashboard/api/dashboardApi';
-import { LoadingState } from '@/components/common/LoadingState';
+import { DashboardSkeleton } from '@/features/dashboard/components/DashboardSkeleton';
 import { ErrorState } from '@/components/common/ErrorState';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
@@ -37,7 +37,7 @@ export default function DashboardPage() {
         </div>
 
         {isLoading ? (
-          <LoadingState message="Loading your workspace..." />
+          <DashboardSkeleton />
         ) : isError ? (
           <ErrorState
             message="Failed to load your dashboard data."

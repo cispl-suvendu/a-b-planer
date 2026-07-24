@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useGetReportByIdQuery } from '@/features/reports/api/reportApi';
 import { ReportHeader } from '@/features/reports/components/ReportHeader';
+import { ReportSkeleton } from '@/features/reports/components/ReportSkeleton';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -69,16 +70,7 @@ export default function ReportPage({ params }: { params: { id: string } }) {
   }, [data, isError, error]);
 
   if (isLoading) {
-    return (
-      <div className="container max-w-5xl animate-pulse space-y-8 py-12">
-        <div className="h-32 rounded-xl bg-muted"></div>
-        <div className="h-40 rounded-xl bg-muted"></div>
-        <div className="space-y-4">
-          <div className="h-96 rounded-xl bg-muted"></div>
-          <div className="h-96 rounded-xl bg-muted"></div>
-        </div>
-      </div>
-    );
+    return <ReportSkeleton />;
   }
 
   // Handle the case where the AI generation is still in progress
