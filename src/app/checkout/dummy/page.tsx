@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,28 +11,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Loader2, CreditCard, CheckCircle2 } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 
 function DummyCheckoutForm() {
-  const searchParams = useSearchParams();
-  const returnUrl = searchParams.get('returnUrl') || '/dashboard';
-
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    // Simulate network delay
-    setTimeout(() => {
-      setSuccess(true);
-
-      // Redirect after success animation
-      setTimeout(() => {
-        window.location.href = `${returnUrl}?success=true&session_id=dummy_session_${Date.now()}`;
-      }, 1500);
-    }, 1500);
+    setShowUpgradeNotice(true);
   };
 
   return (
@@ -48,13 +33,34 @@ function DummyCheckoutForm() {
         </CardDescription>
       </CardHeader>
 
-      {success ? (
-        <CardContent className="flex flex-col items-center justify-center space-y-4 py-12">
-          <CheckCircle2 className="h-16 w-16 text-green-500 animate-in zoom-in" />
-          <h2 className="text-xl font-bold">Payment Successful!</h2>
-          <p className="text-center text-sm text-muted-foreground">
-            Redirecting back to application...
+      {showUpgradeNotice ? (
+        <CardContent className="flex flex-col items-center justify-center space-y-4 py-12 text-center">
+          <div className="mb-2 rounded-full bg-indigo-50 p-4">
+            <CreditCard className="h-10 w-10 text-indigo-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900">Upgrade Request</h2>
+          <p className="max-w-sm text-sm text-slate-600">
+            Self-serve upgrades are currently disabled. To upgrade to the Pro
+            plan, please contact our team directly.
           </p>
+          <div className="mt-4 rounded-md border border-slate-200 bg-slate-100 p-4">
+            <p className="mb-1 text-sm font-semibold text-slate-800">
+              Email us at:
+            </p>
+            <a
+              href="mailto:suvendu.chatterjee@codeclouds.in"
+              className="font-bold text-indigo-600 hover:underline"
+            >
+              suvendu.chatterjee@codeclouds.in
+            </a>
+          </div>
+          <Button
+            variant="outline"
+            className="mt-6 w-full"
+            onClick={() => (window.location.href = '/dashboard')}
+          >
+            Return to Dashboard
+          </Button>
         </CardContent>
       ) : (
         <form onSubmit={handleSubmit}>
@@ -135,24 +141,16 @@ function DummyCheckoutForm() {
               <p className="font-semibold text-slate-700">Order Summary:</p>
               <div className="mt-1 flex justify-between">
                 <span>Pro Plan (Monthly)</span>
-                <span>$29.00</span>
+                <span>$4.00</span>
               </div>
             </div>
           </CardContent>
           <CardFooter>
             <Button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700"
-              disabled={loading}
+              className="w-full bg-indigo-600 font-semibold text-white hover:bg-indigo-700"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                'Pay $29.00'
-              )}
+              Pay $4.00
             </Button>
           </CardFooter>
         </form>

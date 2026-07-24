@@ -37,11 +37,18 @@ export function Testimonials() {
   return (
     <section id="testimonials" className="scroll-mt-20 py-20 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="mx-auto mb-16 max-w-3xl text-center">
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight md:text-4xl">
-            Marketers Love Our Insights
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-indigo-100/50 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400">
+            <Star className="h-4 w-4" />
+            SUCCESS STORIES
+          </div>
+          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-4xl lg:text-5xl">
+            Marketers Love Our{' '}
+            <span className="text-indigo-600 dark:text-indigo-400">
+              Insights
+            </span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base text-slate-600 dark:text-muted-foreground md:text-lg">
             Don&apos;t just take our word for it. See how teams are using AI to
             build higher converting landing pages.
           </p>

@@ -76,7 +76,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
           />
           <PricingCard
             title="Pro"
-            price="$29"
+            price="$4"
             description="For serious marketers and agencies"
             features={[
               'Unlimited Analyses',

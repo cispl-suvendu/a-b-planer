@@ -100,11 +100,33 @@ const config = {
             top: '100%',
           },
         },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'gradient-move-1': {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '33%': { transform: 'translate(-15%, 15%)' },
+          '66%': { transform: 'translate(15%, -15%)' },
+        },
+        'gradient-move-2': {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '33%': { transform: 'translate(15%, -15%)' },
+          '66%': { transform: 'translate(-15%, 15%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         scan: 'scan 3s ease-in-out infinite',
+        'fade-in-up': 'fade-in-up 0.7s ease-out forwards',
+        float: 'float 3s ease-in-out infinite',
+        'gradient-move-1': 'gradient-move-1 18s ease-in-out infinite',
+        'gradient-move-2': 'gradient-move-2 20s ease-in-out infinite',
       },
     },
   },

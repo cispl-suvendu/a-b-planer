@@ -11,7 +11,7 @@ export function TrustedBy() {
   ];
 
   return (
-    <section className="border-y border-border/50 bg-muted/20 py-12">
+    <section className="border-y border-border/50 bg-muted/10 py-12">
       <div className="container mx-auto px-4 md:px-6">
         <p className="mb-8 text-center text-sm font-medium text-muted-foreground">
           Trusted by top e-commerce and SaaS brands worldwide

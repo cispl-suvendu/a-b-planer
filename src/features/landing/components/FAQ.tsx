@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Sparkles } from 'lucide-react';
 
 export function FAQ() {
   const faqs = [
@@ -38,11 +39,18 @@ export function FAQ() {
   return (
     <section id="faq" className="scroll-mt-20 py-20 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="mx-auto mb-16 max-w-3xl text-center">
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight md:text-4xl">
-            All Your Questions, Answered
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-indigo-100/50 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400">
+            <Sparkles className="h-4 w-4" />
+            COMMON QUESTIONS
+          </div>
+          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-4xl lg:text-5xl">
+            All Your Questions,{' '}
+            <span className="text-indigo-600 dark:text-indigo-400">
+              Answered
+            </span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base text-slate-600 dark:text-muted-foreground md:text-lg">
             Find quick answers to the most commonly asked questions about our
             platform. If you need further help, feel free to contact our support
             team.

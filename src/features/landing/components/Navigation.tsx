@@ -81,13 +81,16 @@ export function Navigation() {
             <>
               <Button
                 variant="ghost"
-                className="font-semibold"
+                className="text-sm font-semibold"
                 onClick={() => signOut()}
               >
                 Log out
               </Button>
               <Link href="/dashboard">
-                <Button className="rounded-full bg-indigo-600 px-6 font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-lg">
+                <Button
+                  size="lg"
+                  className="h-12 rounded-full bg-indigo-600 px-8 text-base font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-lg"
+                >
                   Dashboard
                 </Button>
               </Link>
@@ -95,12 +98,15 @@ export function Navigation() {
           ) : (
             <>
               <Link href="/login">
-                <Button variant="ghost" className="font-semibold">
+                <Button variant="ghost" className="text-sm font-semibold">
                   Log in
                 </Button>
               </Link>
               <Link href="/login">
-                <Button className="rounded-full bg-indigo-600 px-6 font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-lg">
+                <Button
+                  size="lg"
+                  className="h-12 rounded-full bg-indigo-600 px-8 text-base font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-lg"
+                >
                   Start for free
                 </Button>
               </Link>
